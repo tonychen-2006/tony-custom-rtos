@@ -1,0 +1,19 @@
+[package]
+name = "tony-custom-rtos"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+embedded-hal = "1.0"
+panic-halt = "1.0"
+
+[dependencies.stm32f4xx-hal]
+version = "0.23"
+features = ["stm32f411"]
+
+[profile.release]
+debug = true
+lto = true
+codegen-units = 1

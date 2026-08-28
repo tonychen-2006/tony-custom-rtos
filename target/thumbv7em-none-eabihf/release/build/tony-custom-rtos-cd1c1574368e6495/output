@@ -1,0 +1,2 @@
+cargo:rustc-link-search=/Users/tonychen/DEV/personal/tony-custom-rtos/target/thumbv7em-none-eabihf/release/build/tony-custom-rtos-cd1c1574368e6495/out
+cargo:rerun-if-changed=memory.x

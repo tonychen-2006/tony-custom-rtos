@@ -1,0 +1,1 @@
+/Users/tonychen/DEV/personal/tony-custom-rtos/target/thumbv7em-none-eabihf/release/tony-custom-rtos: /Users/tonychen/DEV/personal/tony-custom-rtos/build.rs /Users/tonychen/DEV/personal/tony-custom-rtos/memory.x /Users/tonychen/DEV/personal/tony-custom-rtos/src/main.rs
