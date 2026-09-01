@@ -75,17 +75,43 @@ pub fn task_count() -> usize {
 /// Later this becomes:
 /// highest-priority Ready task + round-robin among equal priorities.
 unsafe fn choose_next_task() -> usize {
-    let start = CURRENT_TASK;
+
+    if TASK_COUNT == 0 {
+        return 0;
+    }
+
+    let mut highest_priority: Option<u8> = None;
+
+    for i in 0..TASK_COUNT {
+
+        if TASKS[i].state == TaskState::Ready {
+            match highest_priority {
+                Some(priority) => {
+                    if TASKS[i].priority > priority {
+                        highest_priority = Some(TASKS[i].priority);
+                    }
+                }
+
+                None => {
+                    highest_priority = Some(TASKS[i].priority);
+                }
+            }
+        }
+    }
+
+    let highest_priority = match highest_priority {
+        Some(priority) => priority,
+        None => return CURRENT_TASK;
+    };
 
     for offset in 1..=TASK_COUNT {
-        let candidate = (start + offset) % TASK_COUNT;
+        let candidate = (CURRENT_TASK + offset) % TASK_COUNT;
 
-        if TASKS[candidate].state == TaskState::Ready {
+        if TASKS[candidate].state == TaskState::Ready && TASKS[candidate].priority == highest_priority {
             return candidate;
         }
     }
 
-    // If no other task is Ready, keep running current task.
     CURRENT_TASK
 }
 
@@ -149,5 +175,15 @@ pub fn start() -> ! {
 
     loop {
         cortex_m::asm::wfi();
+    }
+}
+
+pub fn current_task_id() -> TaskId {
+    unsafe { CURRENT_TASK }
+}
+
+pub fn current_priority() -> u8 {
+    unsafe {
+        TASKS[CURRENT_TASK].priority
     }
 }
